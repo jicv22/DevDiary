@@ -14,8 +14,7 @@ class Login extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     GlobalKey<FormState> formKey = GlobalKey<FormState>();
-    TextEditingController emailControl = TextEditingController();
-    TextEditingController passwordControl =  TextEditingController();
+    String? emailValue, passwordValue;
     return Center(
         child: ListView(
           physics: const BouncingScrollPhysics(),
@@ -50,8 +49,10 @@ class Login extends StatelessWidget{
               faActions: 25,
               inputs: [
                 CustomTextFormField(
-                  textEditingController: emailControl,
                   label: 'Email',
+                  updateTextValue: (value) {
+                    emailValue = value;
+                  },
                   getValidatorValue: (String? value){
                     if(value == null || value.isEmpty) return 'Type a valid email';
                     return null;
@@ -59,9 +60,11 @@ class Login extends StatelessWidget{
                 ) ,
                 const SizedBox(height: 10,),
                 CustomTextFormField(
-                  textEditingController: passwordControl,
                   label: 'Password',
                   isPassword: true,
+                  updateTextValue: (value) {
+                    passwordValue = value;
+                  },
                   getValidatorValue: (String? value){
                     if(value == null || value.isEmpty) return 'Type a valid password';
                     return null;
@@ -111,13 +114,11 @@ class Login extends StatelessWidget{
                       color: (colorPalette['primary-light'])!,
                       onTap: () {
                         if (formKey.currentState!.validate()) {
-                          /*ScaffoldMessenger.of(context).showSnackBar(
+                          ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(content: Text('Processing Data')),
-                          );*/
-                          print('******************************');
-                          print(emailControl.text);
-                          print(passwordControl.text);
-                          print('******************************');
+                          );
+                          debugPrint(emailValue);
+                          debugPrint(passwordValue);
                         }
                       },
                     )

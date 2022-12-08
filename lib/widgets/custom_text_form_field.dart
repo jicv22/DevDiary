@@ -10,7 +10,7 @@ class CustomTextFormField extends StatefulWidget {
         this.isPassword = false,
         this.getValidatorValue,
         this.isFormInvalid = false,
-        required this.textEditingController,
+        this.updateTextValue,
         super.key
       }
       );
@@ -19,7 +19,7 @@ class CustomTextFormField extends StatefulWidget {
   bool isPassword;
   bool isFormInvalid;
   Function? getValidatorValue;
-  TextEditingController textEditingController;
+  Function(String? value)? updateTextValue;
 
   @override
   State<CustomTextFormField> createState() => _CustomTextFormFieldState();
@@ -69,7 +69,6 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
             ),
           ),
           child: TextFormField(
-            controller: widget.textEditingController,
             obscureText: widget.isPassword,
             enableSuggestions: !widget.isPassword,
             autocorrect: !widget.isPassword,
@@ -99,16 +98,21 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
                 setState(() {
                   error = widget.getValidatorValue!(value);
                 });
-                return '';
+                if(error != null) return '';
+                return null;
               }catch(er){
                 setState(() {
                   error = null;
                 });
-
                 return null;
               }
             },
             onChanged: (value){
+              try{
+                widget.updateTextValue!(value);
+              }catch(er){
+                debugPrint(er.toString());
+              }
               if (value.isNotEmpty) {
                 if(!isLabelVisible){
                   setState(() => {
