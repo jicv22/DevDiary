@@ -6,15 +6,20 @@ class CustomTextFormField extends StatefulWidget {
   CustomTextFormField(
       {
         this.text = '',
-        this.error = '',
         this.label = '',
         this.isPassword = false,
+        this.getValidatorValue,
+        this.isFormInvalid = false,
+        required this.textEditingController,
         super.key
       }
       );
 
-  String text, label, error;
+  String text, label;
   bool isPassword;
+  bool isFormInvalid;
+  Function? getValidatorValue;
+  TextEditingController textEditingController;
 
   @override
   State<CustomTextFormField> createState() => _CustomTextFormFieldState();
@@ -22,23 +27,23 @@ class CustomTextFormField extends StatefulWidget {
 
 class _CustomTextFormFieldState extends State<CustomTextFormField> {
 
+  String? error;
   bool isLabelVisible = false;
-  bool isFormInvalid = false;
   double sideMargin = 30;
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Container(
+        isLabelVisible == true ? Container(
             width: 1000,
             margin: EdgeInsets.symmetric(horizontal: sideMargin + 20),
             child: CustomText(
-                isLabelVisible == true ? widget.label : '',
+                widget.label,
                 color: colorPalette['secondary-light']!,
                 type: 't2',
                 textAlign: TextAlign.start
             )
-        ),
+        ): const SizedBox(),
         const SizedBox(height: 5,),
         Container(
           height: 50,
@@ -59,11 +64,12 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
                 (colorPalette['primary-dark'])!.withAlpha(0),
                 (colorPalette['primary-dark'])!.withAlpha(0),
                 (colorPalette['primary-dark'])!.withAlpha(0),
-                isFormInvalid ? (colorPalette['error-dark'])! : (colorPalette['secondary-light'])!.withAlpha(50), // aun esta en veremos
+                error != null ? (colorPalette['error-dark'])! : (colorPalette['secondary-light'])!.withAlpha(50), // aun esta en veremos
               ],
             ),
           ),
           child: TextFormField(
+            controller: widget.textEditingController,
             obscureText: widget.isPassword,
             enableSuggestions: !widget.isPassword,
             autocorrect: !widget.isPassword,
@@ -71,7 +77,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
               color: colorPalette['primary-light'],
             ),
             decoration: InputDecoration(
-              hintText: widget.label, // HACER QUE SE MUESTRE NU LABEL FALSO CON ANIMACION CUANDO SE ESCRIBA YA HAYA CONTENIDO EN EL TEXTFORMFIELD
+              hintText: widget.label,
               hintStyle: TextStyle(
                 color: colorPalette['secondary-light'],
               ),
@@ -89,43 +95,45 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
               ),
             ),
             validator: (value) {
-              if (value == null || value.isEmpty) {
+              try{
                 setState(() {
-                  isFormInvalid = true;
+                  error = widget.getValidatorValue!(value);
                 });
                 return '';
+              }catch(er){
+                setState(() {
+                  error = null;
+                });
+
+                return null;
               }
-              setState(() {
-                isFormInvalid = false;
-              });
-              return null;
             },
-            onChanged: (value) => {
+            onChanged: (value){
               if (value.isNotEmpty) {
                 if(!isLabelVisible){
                   setState(() => {
                     isLabelVisible = true
-                  })
+                  });
                 }
               }else{
                 setState(() => {
                   isLabelVisible = false
-                })
+                });
               }
             },
           ),
         ),
         const SizedBox(height: 5,),
-        Container(
+        error != null  ? Container(
             width: 1000,
             margin: EdgeInsets.symmetric(horizontal: sideMargin + 20),
             child: CustomText(
-                isFormInvalid == true ? widget.error : '',
+                error!,
                 color: colorPalette['error-light']!,
                 type: 't2',
                 textAlign: TextAlign.start
             )
-        ),
+        ) : const SizedBox(),
       ],
     );
   }
