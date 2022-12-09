@@ -16,7 +16,9 @@ class Login extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     GlobalKey<FormState> formKey = GlobalKey<FormState>();
-    String? emailValue, passwordValue;
+    TextEditingController email = TextEditingController();
+    TextEditingController password = TextEditingController();
+
     return Center(
         child: ListView(
           physics: const BouncingScrollPhysics(),
@@ -51,10 +53,8 @@ class Login extends StatelessWidget{
               formActionDistance: 35,
               form: [
                 CustomTextFormField(
+                  controller: email,
                   label: 'Email',
-                  updateTextValue: (value) {
-                    emailValue = value;
-                  },
                   validatorValue: (String? value){
                     if(value == null || value.isEmpty) return 'Type a valid email';
                     return null;
@@ -62,11 +62,9 @@ class Login extends StatelessWidget{
                 ) ,
                 const SizedBox(height: 10,),
                 CustomTextFormField(
+                  controller: password,
                   label: 'Password',
                   isPassword: true,
-                  updateTextValue: (value) {
-                    passwordValue = value;
-                  },
                   validatorValue: (String? value){
                     if(value == null || value.isEmpty) return 'Type a valid password';
                     return null;
@@ -95,7 +93,6 @@ class Login extends StatelessWidget{
                 Expanded(
                     child: CustomButton(
                       heroTag: 'signUp',
-                      text: 'Sign Up',
                       onTap: (){
                         Navigator.push(context, MaterialPageRoute(builder: (context) => SignUp()));
                       },
@@ -112,7 +109,6 @@ class Login extends StatelessWidget{
                 Expanded(
                     child: CustomButton(
                       heroTag: 'signIn',
-                      text: 'Sign In',
                       icon: Icon(
                         Icons.login,
                         color: colorPalette['primary-light'],
@@ -125,8 +121,8 @@ class Login extends StatelessWidget{
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(content: Text('Processing Data')),
                           );
-                          debugPrint(emailValue);
-                          debugPrint(passwordValue);
+                          debugPrint(email.text);
+                          debugPrint(password.text);
                         }
                       },
                     )

@@ -12,7 +12,7 @@ class PassRecover extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     GlobalKey<FormState>? formKey = GlobalKey<FormState>();
-    String? emailValue;
+    TextEditingController email = TextEditingController();
 
     return Scaffold(
       backgroundColor: colorPalette['primary-dark'],
@@ -46,10 +46,8 @@ class PassRecover extends StatelessWidget{
               formActionDistance: 35,
               form: [
                 CustomTextFormField(
+                  controller: email,
                   label: 'Email',
-                  updateTextValue: (value) {
-                    emailValue = value;
-                  },
                   validatorValue: (String? value){
                     if(value == null || value.isEmpty) return 'Enter a valid email';
                     return null;
@@ -98,7 +96,7 @@ class PassRecover extends StatelessWidget{
                     backgroundColor: colorPalette['secondary-dark'],
                     onTap: (){
                       if(!formKey.currentState!.validate()) return;
-                      debugPrint('*****************************Sending Code\n' + emailValue!);
+                      debugPrint('*****************************Sending Code\n' + email.text);
                     },
                   ),
                 ),

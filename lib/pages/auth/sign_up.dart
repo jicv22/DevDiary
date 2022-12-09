@@ -12,7 +12,12 @@ class SignUp extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     GlobalKey<FormState>? formKey = GlobalKey<FormState>();
-    String? emailValue;// HACE RUN VALIU EN UN MAP O UN ARRAY PARA CADA CAMPO Y PODER ENVIARLOS AL BACKEND O A LA BD
+    TextEditingController email = TextEditingController();
+    TextEditingController password = TextEditingController();
+    TextEditingController name = TextEditingController();
+    TextEditingController description = TextEditingController();
+    TextEditingController skill = TextEditingController();
+
 
     return Scaffold(
       backgroundColor: colorPalette['primary-dark'],
@@ -21,6 +26,7 @@ class SignUp extends StatelessWidget{
             shrinkWrap: true,
             physics: const BouncingScrollPhysics(),
             children: [
+              const SizedBox(height: 25,),
               Center(
                   child: CustomText(
                     'Logo Here\nInstead the name',
@@ -46,10 +52,8 @@ class SignUp extends StatelessWidget{
                 formActionDistance: 35,
                 form: [
                   CustomTextFormField(
+                    controller: email,
                     label: 'Email',
-                    updateTextValue: (value) {
-                      emailValue = value;
-                    },
                     validatorValue: (String? value){
                       if(value == null || value.isEmpty) return 'Enter a valid email';
                       return null;
@@ -57,11 +61,9 @@ class SignUp extends StatelessWidget{
                   ),
                   const SizedBox(height: 10,),
                   CustomTextFormField(
+                    controller: password,
                     label: 'Password',
                     isPassword: true,
-                    updateTextValue: (value) {
-                      emailValue = value;
-                    },
                     validatorValue: (String? value){
                       if(value == null || value.isEmpty) return 'Enter a valid Password';
                       if(value.length < 8) return 'Enter more than 8 characters';
@@ -70,10 +72,8 @@ class SignUp extends StatelessWidget{
                   ),
                   const SizedBox(height: 10,),
                   CustomTextFormField(
+                    controller: name,
                     label: 'Name',
-                    updateTextValue: (value) {
-                      emailValue = value;
-                    },
                     validatorValue: (String? value){
                       if(value == null || value.isEmpty) return 'Enter a valid Name';
                       return null;
@@ -81,24 +81,20 @@ class SignUp extends StatelessWidget{
                   ),
                   const SizedBox(height: 10,),
                   CustomTextFormField(
+                    controller: description,
                     label: 'Descripcion',
-                    updateTextValue: (value) {
-                      emailValue = value;
-                    },
-                    validatorValue: (String? value){
-                      //if(value == null || value.isEmpty) return 'Enter a valid Name';
-                      return null;
-                    },
                   ),
                   const SizedBox(height: 10,),
                   CustomTextFormField(
+                    controller: skill,
                     label: 'Skills',
-                    updateTextValue: (value) {
-                      emailValue = value;
-                    },
                     validatorValue: (String? value){
                       if(value == null || value.isEmpty) return 'Enter a valid Skill';
                       return null;
+                    },
+                    onEditingComplete: (){
+                      print('"${skill.text}" added');
+                      skill.clear();
                     },
                   ),
                 ],
@@ -128,7 +124,8 @@ class SignUp extends StatelessWidget{
                     ),
                   ),
                 ],
-              )
+              ),
+              const SizedBox(height: 25,),
             ],
           )
       ),

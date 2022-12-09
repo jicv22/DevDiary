@@ -8,15 +8,19 @@ class CustomTextFormField extends StatefulWidget {
         this.label = '',
         this.isPassword = false,
         this.validatorValue,
-        this.updateTextValue,
+        this.height,
+        this.onEditingComplete,
+        this.controller,
         super.key
       }
-      );
+    );
 
   String label;
   bool isPassword;
+  double? height = 50;
   Function(String?)? validatorValue;
-  Function(String? value)? updateTextValue;
+  VoidCallback? onEditingComplete;
+  TextEditingController? controller = TextEditingController();
 
   @override
   State<CustomTextFormField> createState() => _CustomTextFormFieldState();
@@ -43,7 +47,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
         ): const SizedBox(),
         const SizedBox(height: 5,),
         Container(
-          height: 50,
+          height: widget.height,
           margin: EdgeInsets.symmetric(horizontal: sideMargin),
           padding: const EdgeInsets.only(left: 25),
           decoration: BoxDecoration(
@@ -66,6 +70,8 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
             ),
           ),
           child: TextFormField(
+            controller: widget.controller,
+            onEditingComplete: widget.onEditingComplete,
             obscureText: widget.isPassword,
             enableSuggestions: !widget.isPassword,
             autocorrect: !widget.isPassword,
@@ -105,11 +111,6 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
               }
             },
             onChanged: (value){
-              try{
-                widget.updateTextValue!(value);
-              }catch(er){
-                debugPrint(er.toString());
-              }
               if (value.isNotEmpty) {
                 if(!isLabelVisible){
                   setState(() => {
