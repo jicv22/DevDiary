@@ -5,20 +5,17 @@ import 'package:flutter/material.dart';
 class CustomTextFormField extends StatefulWidget {
   CustomTextFormField(
       {
-        this.text = '',
         this.label = '',
         this.isPassword = false,
-        this.getValidatorValue,
-        this.isFormInvalid = false,
+        this.validatorValue,
         this.updateTextValue,
         super.key
       }
       );
 
-  String text, label;
+  String label;
   bool isPassword;
-  bool isFormInvalid;
-  Function? getValidatorValue;
+  Function(String?)? validatorValue;
   Function(String? value)? updateTextValue;
 
   @override
@@ -96,7 +93,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
             validator: (value) {
               try{
                 setState(() {
-                  error = widget.getValidatorValue!(value);
+                  error = widget.validatorValue!(value);
                 });
                 if(error != null) return '';
                 return null;

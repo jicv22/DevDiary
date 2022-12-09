@@ -26,6 +26,7 @@ class CustomText extends StatelessWidget{
       this.color = Colors.black,
       this.isUnderline = false,
       this.onTap,
+      this.overflow,
       super.key
     }
   );
@@ -37,6 +38,7 @@ class CustomText extends StatelessWidget{
   TextAlign textAlign;
   bool isUnderline;
   VoidCallback? onTap;
+  TextOverflow? overflow;
 
   @override
   Widget build(BuildContext context) {
@@ -46,6 +48,7 @@ class CustomText extends StatelessWidget{
       child: Text(
         text,
         textAlign: textAlign,
+        overflow: overflow,
         style: TextStyle(
           fontWeight: fontWeight,
           fontSize: fontSizes[type],

@@ -6,9 +6,9 @@ class CustomForm extends StatelessWidget{
     {
       this.noSubmitBtn = false,
       this.noCancelBtn = false,
-      this.faActions = 0,
+      this.formActionDistance = 0,
       this.actions = const [],
-      this.inputs = const [],
+      this.form = const [],
       this.postSubmit,
       this.onCancel,
       this.formKey,
@@ -16,8 +16,8 @@ class CustomForm extends StatelessWidget{
     }
   );
 
-  double faActions;
-  List<Widget> inputs;
+  double formActionDistance;
+  List<Widget> form;
   List<Widget> actions;
   bool noSubmitBtn, noCancelBtn;
   VoidCallback? postSubmit;
@@ -28,12 +28,12 @@ class CustomForm extends StatelessWidget{
   Widget build(BuildContext context) {
     List<Widget> formChildren = [];
 
-    inputs.forEach((e) {
+    form.forEach((e) {
       formChildren.add(e);
     });
 
     formChildren.add(
-      SizedBox(height: faActions,)
+      SizedBox(height: formActionDistance,)
     );
 
     formChildren.add(

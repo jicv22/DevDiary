@@ -5,6 +5,7 @@ class CustomButton extends StatelessWidget{ // si se agrega un icono puede que l
   CustomButton(
     {
       this.icon,
+      required this.heroTag,
       this.text = '',
       this.onTap,
       this.color,
@@ -17,10 +18,12 @@ class CustomButton extends StatelessWidget{ // si se agrega un icono puede que l
   String text;
   Icon? icon;
   VoidCallback? onTap;
+  String heroTag;
 
   @override
   Widget build(BuildContext context) {
     return FloatingActionButton.extended(
+      heroTag: heroTag,
       label: Text(
         text,
         style: TextStyle(

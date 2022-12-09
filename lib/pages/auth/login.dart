@@ -1,4 +1,6 @@
 import 'package:dev_diary/Widgets/custom_text.dart';
+import 'package:dev_diary/pages/auth/pass_recover.dart';
+import 'package:dev_diary/pages/auth/sign_up.dart';
 import 'package:dev_diary/utils/color_palette.dart';
 import 'package:dev_diary/widgets/custom_text_form_field.dart';
 import 'package:dev_diary/widgets/custom_button.dart';
@@ -46,14 +48,14 @@ class Login extends StatelessWidget{
             ),
             CustomForm(
               formKey: formKey,
-              faActions: 25,
-              inputs: [
+              formActionDistance: 35,
+              form: [
                 CustomTextFormField(
                   label: 'Email',
                   updateTextValue: (value) {
                     emailValue = value;
                   },
-                  getValidatorValue: (String? value){
+                  validatorValue: (String? value){
                     if(value == null || value.isEmpty) return 'Type a valid email';
                     return null;
                   }
@@ -65,7 +67,7 @@ class Login extends StatelessWidget{
                   updateTextValue: (value) {
                     passwordValue = value;
                   },
-                  getValidatorValue: (String? value){
+                  validatorValue: (String? value){
                     if(value == null || value.isEmpty) return 'Type a valid password';
                     return null;
                   }
@@ -81,7 +83,9 @@ class Login extends StatelessWidget{
                         isUnderline: true,
                         type: 't2',
                         color: (colorPalette['secondary-light'])!,
-                        onTap: (){print('*****************\nI forgot my password\n*****************');},
+                        onTap: (){
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => PassRecover()));
+                        },
                       )
                     ],
                   ),
@@ -90,27 +94,31 @@ class Login extends StatelessWidget{
               actions: [
                 Expanded(
                     child: CustomButton(
+                      heroTag: 'signUp',
                       text: 'Sign Up',
-                      onTap: (){},
+                      onTap: (){
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => SignUp()));
+                      },
                       icon: Icon(
                         Icons.person_add,
                         color: colorPalette['primary-light'],
                         size: 25,
                       ),
-                      backgroundColor: (colorPalette['primary-action-light'])!,
+                      backgroundColor: (colorPalette['secondary-dark'])!,
                       color: (colorPalette['primary-light'])!,
                     )
                 ),
                 const SizedBox(width: 25),
                 Expanded(
                     child: CustomButton(
+                      heroTag: 'signIn',
                       text: 'Sign In',
                       icon: Icon(
                         Icons.login,
                         color: colorPalette['primary-light'],
                         size: 30,
                       ),
-                      backgroundColor: (colorPalette['primary-action-light'])!,
+                      backgroundColor: (colorPalette['secondary-dark'])!,
                       color: (colorPalette['primary-light'])!,
                       onTap: () {
                         if (formKey.currentState!.validate()) {
