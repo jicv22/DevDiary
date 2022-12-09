@@ -90,6 +90,7 @@ class SignUp extends StatelessWidget{
                       return null;
                     },
                   ),
+                  const SizedBox(height: 10,),
                   CustomTextFormField(
                     label: 'Skills',
                     updateTextValue: (value) {
